@@ -85,48 +85,12 @@ var upperCasedCharacters = [
   "Y",
   "Z",
 ];
-//Array of total random items
-var totalArray = [];
 
+//Array of total random items
 var generateBtn = document.querySelector("#generate");
 
-function generatePassword() {
-  var upperCasedCharactersPrompt = confirm("Do you want uppercase letters?");
-  var lowerCasedCharactersPrompt = confirm("Do you want lowercase letters?");
-  var numericCharactersPrompt = confirm("Do you want numbers?");
-  var specialCharactersPrompt = confirm("Do you want special characters?");
-
-  //If user chooses to include uppercased characters, the upperCasedCharacters array is push into totalArray
-  if (upperCasedCharactersPrompt) {
-    totalArray.push(upperCasedCharacters);
-  }
-
-  //If user chooses lowercased characters, the lowerCasedCharacters array is pushed into totalArray
-  if (lowerCasedCharactersPrompt) {
-    totalArray.push(lowerCasedCharacters);
-  }
-
-  //If user chooses numeric characters, the numericCharacters array is pushed into totalArray
-  if (numericCharactersPrompt === true) {
-    totalArray.push(numericCharacters);
-  }
-
-  //If user chooses special characters, the specialCharacters array is pushed into totalArray
-  if (specialCharactersPrompt === true) {
-    totalArray.push(specialCharacters);
-  }
-
-  var merged = [].concat.apply([], totalArray);
-  var scrambledpassword = [];
-  for (i = 0; i < 10; i++) {
-    var scrambled = merged[Math.floor(Math.random() * merged.length)];
-    scrambledpassword.push(scrambled);
-  }
-
-  var almostpasword = scrambledpassword.toString();
-  var password = almostpasword.replace(/,/g, "");
-  return password;
-}
+// Add event listener to generate button
+generateBtn.addEventListener("click", writePassword);
 
 // Write password to the #password input
 function writePassword() {
@@ -136,5 +100,93 @@ function writePassword() {
   passwordText.value = password;
 }
 
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+function generatePassword() {
+  var upperCasedCharactersPrompt = confirm("Do you want uppercase letters?");
+  var lowerCasedCharactersPrompt = confirm("Do you want lowercase letters?");
+  var numericCharactersPrompt = confirm("Do you want numbers?");
+  var specialCharactersPrompt = confirm("Do you want special characters?");
+
+  // if(!upperCasedCharactersPrompt && !lowerCasedCharactersPrompt && !numericCharactersPrompt && !specialCharactersPrompt){
+  if (
+    !(
+      upperCasedCharactersPrompt ||
+      lowerCasedCharactersPrompt ||
+      numericCharactersPrompt ||
+      specialCharactersPrompt
+    )
+  ) {
+    alert("Please select atleast one criteria!");
+    return "";
+  }
+
+  var totalArray = [];
+  var password = [];
+  //If user chooses to include uppercased characters, the upperCasedCharacters array is push into totalArray
+  if (upperCasedCharactersPrompt) {
+    totalArray = totalArray.concat(upperCasedCharacters);
+    password.push(randomElement(upperCasedCharacters));
+  }
+
+  //If user chooses lowercased characters, the lowerCasedCharacters array is pushed into totalArray
+  if (lowerCasedCharactersPrompt) {
+    totalArray = totalArray.concat(lowerCasedCharacters);
+    password.push(randomElement(lowerCasedCharacters));
+  }
+
+  //If user chooses numeric characters, the numericCharacters array is pushed into totalArray
+  if (numericCharactersPrompt === true) {
+    totalArray = totalArray.concat(numericCharacters);
+    password.push(randomElement(numericCharacters));
+  }
+
+  //If user chooses special characters, the specialCharacters array is pushed into totalArray
+  if (specialCharactersPrompt === true) {
+    totalArray = totalArray.concat(specialCharacters);
+    password.push(randomElement(specialCharacters));
+  }
+
+  for (var i = password.length; i < 10; i++) {
+    var scrambled = randomElement(totalArray);
+    password.push(scrambled);
+  }
+
+  return shuffle(password).join("");
+}
+
+// [0,1,2,3]
+// i === 0, rand === 2
+// temp1 === arr[i]:0, temp2 === arr[rand]:2
+// [2,1,0,3]
+// i === 1, rand === 1
+// temp1 === arr[i]:1, temp2 === arr[rand]:1
+// [2,1,0,3]
+// i === 2, rand === 3
+// temp1 === arr[i]:0, temp2 === arr[rand]:3
+// [2,1,3,0]
+// i === 3, rand === 1
+// temp1 === arr[i]:0, temp2 === arr[rand]:1
+// [2,0,3,1]
+
+
+// JSDoc3
+/**
+ * 
+ * @param {any[]} arr Any array
+ */
+function shuffle(arr = []) {
+  for (var i = 0; i < arr.length; i++) {
+    var rand = Math.floor(Math.random() * arr.length);
+
+    var temp1 = arr[i];
+    var temp2 = arr[rand];
+
+    arr[i] = temp2;
+    arr[rand] = temp1;
+  }
+
+  return arr;
+}
+
+function randomElement(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
