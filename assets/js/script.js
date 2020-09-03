@@ -1,65 +1,131 @@
 // Assignment Code
+// Array of special characters to be included in password
+var specialCharacters = [
+  "@",
+  "%",
+  "+",
+  "\\",
+  "/",
+  "'",
+  "!",
+  "#",
+  "$",
+  "^",
+  "?",
+  ":",
+  ",",
+  ")",
+  "(",
+  "}",
+  "{",
+  "]",
+  "[",
+  "~",
+  "-",
+  "_",
+  ".",
+];
+// Array of numeric characters to be included in password
+var numericCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+// Array of lowercase characters to be included in password
+var lowerCasedCharacters = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+];
+// Array of uppercase characters to be included in password
+var upperCasedCharacters = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
+//Array of total random items
+var totalArray = [];
+
 var generateBtn = document.querySelector("#generate");
 
-function shuffleArray(array) {
-  for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-  }
-}
-
 function generatePassword() {
-  var lettersPrompt = confirm("Do you want letters?");
-  var numbersPrompt = confirm("Do you want numbers?");
+  var upperCasedCharactersPrompt = confirm("Do you want uppercase letters?");
+  var lowerCasedCharactersPrompt = confirm("Do you want lowercase letters?");
+  var numericCharactersPrompt = confirm("Do you want numbers?");
   var specialCharactersPrompt = confirm("Do you want special characters?");
-  var password = [];
-  var shuffledpassword = [];
 
-  if (lettersPrompt === true) {
-    var characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    var charactersLength = characters.length;
-    for (var i = 0; i < 10; i++) {
-      password += characters.charAt(
-        Math.floor(Math.random() * charactersLength)
-      );
-    }
+  //If user chooses to include uppercased characters, the upperCasedCharacters array is push into totalArray
+  if (upperCasedCharactersPrompt) {
+    totalArray.push(upperCasedCharacters);
   }
 
-  if (numbersPrompt === true) {
-    //for (var i = 0; i < 10; i++) {
-    //  password += Math.floor(Math.random() * 10);
-    //}
-    var numbers = new Uint32Array(1);
-    window.crypto.getRandomValues(numbers);
-
-    for (var i = 0; i < numbers.length; i++) {
-      password += numbers[i];
-    }
+  //If user chooses lowercased characters, the lowerCasedCharacters array is pushed into totalArray
+  if (lowerCasedCharactersPrompt) {
+    totalArray.push(lowerCasedCharacters);
   }
 
+  //If user chooses numeric characters, the numericCharacters array is pushed into totalArray
+  if (numericCharactersPrompt === true) {
+    totalArray.push(numericCharacters);
+  }
+
+  //If user chooses special characters, the specialCharacters array is pushed into totalArray
   if (specialCharactersPrompt === true) {
-    var characters =
-      "!@#$%^&*()+~`:?><";
-    var charactersLength = characters.length;
-    for (var i = 0; i < 5; i++) {
-      password += characters.charAt(
-        Math.floor(Math.random() * charactersLength)
-      );
-    }
+    totalArray.push(specialCharacters);
   }
 
-  for (var i = password.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = password[i];
-    password[i] = password[j];
-    password[j] = temp;
-    shuffledpassword += temp;
-}
+  var merged = [].concat.apply([], totalArray);
+  var scrambledpassword = [];
+  for (i = 0; i < 10; i++) {
+    var scrambled = merged[Math.floor(Math.random() * merged.length)];
+    scrambledpassword.push(scrambled);
+  }
 
-  return shuffledpassword;
+  var almostpasword = scrambledpassword.toString();
+  var password = almostpasword.replace(/,/g, "");
+  return password;
 }
 
 // Write password to the #password input
