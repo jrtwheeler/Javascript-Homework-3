@@ -101,10 +101,22 @@ function writePassword() {
 }
 
 function generatePassword() {
+  //Here are the prompts and confirms for the user choices for the password.
   var upperCasedCharactersPrompt = confirm("Do you want uppercase letters?");
   var lowerCasedCharactersPrompt = confirm("Do you want lowercase letters?");
   var numericCharactersPrompt = confirm("Do you want numbers?");
   var specialCharactersPrompt = confirm("Do you want special characters?");
+  var passwordLengthInput = prompt("Enter a numeric length for the password between 8 and 128 characters.");
+  var passwordLength = parseInt(passwordLengthInput);
+
+  //If the password is shorter than 8 characters or longer than 128, the user is prompted to enter a correct length.
+  if (passwordLength < 8) {
+    alert("Please enter a value greater than 8.");
+    return '';
+  } else if (passwordLength > 128) {
+    alert("Please enter a value less than 128.");
+    return '';
+  }
 
   // if(!upperCasedCharactersPrompt && !lowerCasedCharactersPrompt && !numericCharactersPrompt && !specialCharactersPrompt){
   if (
@@ -119,7 +131,9 @@ function generatePassword() {
     return "";
   }
 
+  //The if statements concat the appopriate array into totalArray
   var totalArray = [];
+  //The statements push one random character from each choice into password array
   var password = [];
   //If user chooses to include uppercased characters, the upperCasedCharacters array is push into totalArray
   if (upperCasedCharactersPrompt) {
@@ -145,27 +159,15 @@ function generatePassword() {
     password.push(randomElement(specialCharacters));
   }
 
-  for (var i = password.length; i < 10; i++) {
+  //This for statement uses the random element function to scramble totalArray and push the scrambled results into password.
+  for (var i = password.length; i < passwordLength; i++) {
     var scrambled = randomElement(totalArray);
     password.push(scrambled);
   }
 
+  //The password is shuffled again with the shuffle array
   return shuffle(password).join("");
 }
-
-// [0,1,2,3]
-// i === 0, rand === 2
-// temp1 === arr[i]:0, temp2 === arr[rand]:2
-// [2,1,0,3]
-// i === 1, rand === 1
-// temp1 === arr[i]:1, temp2 === arr[rand]:1
-// [2,1,0,3]
-// i === 2, rand === 3
-// temp1 === arr[i]:0, temp2 === arr[rand]:3
-// [2,1,3,0]
-// i === 3, rand === 1
-// temp1 === arr[i]:0, temp2 === arr[rand]:1
-// [2,0,3,1]
 
 
 // JSDoc3
@@ -173,6 +175,7 @@ function generatePassword() {
  * 
  * @param {any[]} arr Any array
  */
+//function shuffle uses the shuffle algorythm 
 function shuffle(arr = []) {
   for (var i = 0; i < arr.length; i++) {
     var rand = Math.floor(Math.random() * arr.length);
@@ -187,6 +190,7 @@ function shuffle(arr = []) {
   return arr;
 }
 
+//function randomElement takes in an array as a parameter and returns a random element of the array using the index position.
 function randomElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
