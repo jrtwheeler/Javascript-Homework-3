@@ -4,7 +4,7 @@ This project uses Javascript to build a password generator that produces a passw
 
 If the user chooses a password length below 8 characters or above 127 characters, the user is alerted to pick a correct password length.
 
-The page can be found on GitHub at [Javascript-Password-Generator](https://jrtwheeler.github.io/Javascript-Password-Generator/).
+The page can be found on GitHub at [Javascript-Password-Generator](https://jrtwheeler.github.io/Password-Generator/).
 
 - Javascript
 - JQUERY
